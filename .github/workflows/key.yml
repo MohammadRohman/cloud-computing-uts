@@ -1,0 +1,27 @@
+name: Deploy to AWS EC2
+
+on:
+  push:
+    branches:
+      - main  # Trigger deployment on push to branch main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4  # (better to use latest version)
+
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.7.0  # (use newer version)
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ec2-user@3.27.121.14 << 'EOF'
+            cd /var/www/html/uts-cloud-computing
+            sudo git pull origin main
+            sudo systemctl restart httpd
+          EOF
