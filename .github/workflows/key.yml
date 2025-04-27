@@ -20,7 +20,7 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ec2-user@3.27.121.14 << 'EOF'
+          ssh -o StrictHostKeyChecking=no ec2-user@3.25.95.144 << 'EOF'
             cd /var/www/html/cloud-computing-uts
             sudo git pull origin main
             sudo systemctl restart httpd
